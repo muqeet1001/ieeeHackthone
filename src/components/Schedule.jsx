@@ -1,6 +1,6 @@
 export default function Schedule() {
   return (
-<section className="min-h-screen flex flex-col justify-center py-24 bg-surface-container-low border-y border-dashed border-outline-variant" id="schedule">
+    <section className="min-h-screen flex flex-col justify-center py-24 bg-surface-container-low border-y border-dashed border-outline-variant" id="schedule">
       <div className="max-w-7xl mx-auto px-6">
         <div className="flex flex-col md:flex-row justify-between items-end mb-16">
           <h2 id="schedule-heading" className="font-headline text-5xl md:text-7xl font-black tracking-tighter uppercase leading-none">THE<br /><span className="text-primary">TIMELINE</span></h2>

@@ -1,6 +1,6 @@
 export default function Prizes() {
   return (
-<section className="min-h-screen flex flex-col justify-center py-24 px-6 overflow-hidden relative" id="prizes">
+    <section className="min-h-screen flex flex-col justify-center py-24 px-6 overflow-hidden relative" id="prizes">
       <div className="absolute -right-20 top-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-primary opacity-[0.03] blur-[100px] rounded-full"></div>
       <div className="max-w-7xl mx-auto">
         <div className="grid md:grid-cols-2 gap-16 items-center">
@@ -33,7 +33,7 @@ export default function Prizes() {
               <div className="w-16 h-1 bg-on-primary-fixed mb-8"></div>
               <p className="font-label font-bold tracking-[0.4em] uppercase text-sm mb-4">GRAND PRIZE POOL</p>
               <div className="font-headline text-7xl md:text-8xl font-black tracking-tighter mb-4 leading-none">
-                ₹20,000
+                ₹15,000
               </div>
               <p className="font-headline text-2xl font-bold uppercase mb-8">WINNER TAKES ALL</p>
               <div className="w-full h-[1px] bg-on-primary-fixed opacity-30 mb-8"></div>
