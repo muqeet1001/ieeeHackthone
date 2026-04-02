@@ -56,9 +56,9 @@ export default function Footer() {
             TERMS
           </FooterLink>
           <div className="flex gap-4 text-[10px] text-on-surface-variant opacity-50">
-            <span>DAY 1: [MARCH 14, 2026]</span>
+            <span>DAY 1: [APRIL 14, 2026]</span>
             <span className="w-1 h-1 bg-outline-variant rounded-full self-center" />
-            <span>DAY 2: [MARCH 15, 2026]</span>
+            <span>DAY 2: [APRIL 15, 2026]</span>
           </div>
         </FadeIn>
       </div>

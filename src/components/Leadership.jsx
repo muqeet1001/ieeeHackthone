@@ -38,7 +38,7 @@ export default function Leadership() {
           {leaders.map((leader, i) => (
             <div key={i} className="group flex flex-col items-center bg-surface-container border-2 border-[#262626] hover:border-primary transition-all duration-300 p-8 relative overflow-hidden hover:-translate-y-2">
               {/* Image Container with Neo-brutalist styling */}
-              <div className="mb-6 w-48 h-48 relative grayscale group-hover:grayscale-0 transition-all duration-500 outline outline-2 outline-offset-4 outline-[#262626] group-hover:outline-primary z-10 shadow-[8px_8px_0px_0px_rgba(38,38,38,1)] group-hover:shadow-[12px_12px_0px_0px_rgba(255,124,245,0.4)]">
+              <div className="mb-6 w-48 h-48 relative grayscale-0 md:grayscale group-hover:grayscale-0 transition-all duration-500 outline outline-2 outline-offset-4 outline-[#262626] group-hover:outline-primary z-10 shadow-[8px_8px_0px_0px_rgba(38,38,38,1)] group-hover:shadow-[12px_12px_0px_0px_rgba(255,124,245,0.4)]">
                 <img 
                   src={leader.image} 
                   alt={leader.title} 
