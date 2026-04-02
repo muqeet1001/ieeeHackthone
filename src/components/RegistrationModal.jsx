@@ -142,7 +142,7 @@ export default function RegistrationModal({ isOpen, onClose }) {
       formData.append('members', JSON.stringify(data.members));
       formData.append('paymentScreenshot', paymentFile);
 
-      const res = await fetch('http://localhost:5000/api/register', {
+      const res = await fetch('https://backend-hackathone-jh96bgz5r-mqts-projects.vercel.app/api/register', {
         method: 'POST',
         body: formData,
       });
