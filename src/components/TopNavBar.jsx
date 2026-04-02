@@ -5,7 +5,6 @@ import { motion } from 'framer-motion';
 const NAV_LINKS = [
   { label: 'SCHEDULE', href: '#schedule' },
   { label: 'PRIZES',   href: '#prizes' },
-  { label: 'TEAM',     href: '#team' },
   { label: 'VENUE',    href: '#venue' },
 ];
 

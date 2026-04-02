@@ -23,14 +23,17 @@ export default function RegistrationModal({ isOpen, onClose }) {
   const [step, setStep] = useState(1);
   const [direction, setDirection] = useState(1); // 1 = forward, -1 = backward
   const [errors, setErrors] = useState({});
-  const [shake, setShake] = useState(false); // trigger shake animation
+  const [shake, setShake] = useState(false);
+  const [paymentFile, setPaymentFile] = useState(null);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitError, setSubmitError] = useState('');
 
   const [data, setData] = useState({
     teamName: '',
     memberCount: 2, // default
     members: [
-      { id: 1, name: '', email: '', mobile: '', isLeader: true },
-      { id: 2, name: '', email: '', mobile: '', isLeader: false },
+      { id: 1, name: '', email: '', mobile: '', college: '', isLeader: true },
+      { id: 2, name: '', email: '', mobile: '', college: '', isLeader: false },
     ],
   });
 
@@ -44,6 +47,8 @@ export default function RegistrationModal({ isOpen, onClose }) {
       setTimeout(() => {
         setStep(1);
         setErrors({});
+        setPaymentFile(null);
+        setSubmitError('');
       }, 300);
     }
     return () => {
@@ -63,7 +68,7 @@ export default function RegistrationModal({ isOpen, onClose }) {
       if (count > newMembers.length) {
         // Add members
         for (let i = newMembers.length; i < count; i++) {
-          newMembers.push({ id: i + 1, name: '', email: '', mobile: '', isLeader: false });
+          newMembers.push({ id: i + 1, name: '', email: '', mobile: '', college: '', isLeader: false });
         }
       } else {
         // Remove members
@@ -104,6 +109,7 @@ export default function RegistrationModal({ isOpen, onClose }) {
       if (!m.name.trim()) newErrors[`name_${i}`] = 'Required';
       if (!m.email.trim() || !/^\S+@\S+\.\S+$/.test(m.email)) newErrors[`email_${i}`] = 'Invalid email';
       if (!m.mobile.trim() || m.mobile.length < 10) newErrors[`mobile_${i}`] = 'Invalid phone';
+      if (!(m.college && m.college.trim())) newErrors[`college_${i}`] = 'Required';
     });
     setErrors(newErrors);
     if (Object.keys(newErrors).length > 0) triggerShake();
@@ -114,9 +120,44 @@ export default function RegistrationModal({ isOpen, onClose }) {
     if (step === 1 && !validateStep1()) return;
     if (step === 2 && !validateStep2()) return;
     
-    if (step < 3) {
+    if (step < 6) {
       setDirection(1);
       setStep((p) => p + 1);
+    }
+  };
+
+  // ──── SUBMIT TO BACKEND ────
+  const handleSubmit = async () => {
+    if (!paymentFile) {
+      setSubmitError('Please upload your payment screenshot first.');
+      triggerShake();
+      return;
+    }
+    setIsSubmitting(true);
+    setSubmitError('');
+    try {
+      const formData = new FormData();
+      formData.append('teamName', data.teamName);
+      formData.append('memberCount', data.memberCount);
+      formData.append('members', JSON.stringify(data.members));
+      formData.append('paymentScreenshot', paymentFile);
+
+      const res = await fetch('http://localhost:5000/api/register', {
+        method: 'POST',
+        body: formData,
+      });
+      const json = await res.json();
+      if (!res.ok || !json.success) {
+        throw new Error(json.message || 'Registration failed');
+      }
+      // Success — advance past the payment QR step to WhatsApp step
+      setDirection(1);
+      setStep(5);
+    } catch (err) {
+      setSubmitError(err.message);
+      triggerShake();
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
@@ -166,8 +207,8 @@ export default function RegistrationModal({ isOpen, onClose }) {
                 onChange={handleMemberCountChange}
                 className="w-full bg-surface-container-high border border-outline-variant focus:border-primary rounded-md px-4 py-3 text-white outline-none transition-colors appearance-none"
               >
-                {[1, 2, 3, 4].map((num) => (
-                  <option key={num} value={num}>{num} Member{num > 1 ? 's' : ''}</option>
+                {[2, 3, 4].map((num) => (
+                  <option key={num} value={num}>{num} Members</option>
                 ))}
               </select>
             </div>
@@ -234,6 +275,15 @@ export default function RegistrationModal({ isOpen, onClose }) {
                         className={`w-full bg-surface border ${errors[`mobile_${index}`] ? 'border-error' : 'border-outline-variant focus:border-secondary'} rounded-md px-3 py-2 text-sm text-white outline-none transition-colors`}
                       />
                     </div>
+                    <div>
+                      <input
+                        type="text"
+                        placeholder="College Name"
+                        value={member.college || ''}
+                        onChange={(e) => updateMember(index, 'college', e.target.value)}
+                        className={`w-full bg-surface border ${errors[`college_${index}`] ? 'border-error' : 'border-outline-variant focus:border-secondary'} rounded-md px-3 py-2 text-sm text-white outline-none transition-colors`}
+                      />
+                    </div>
                   </div>
                 </div>
               ))}
@@ -288,6 +338,110 @@ export default function RegistrationModal({ isOpen, onClose }) {
             </div>
           </motion.div>
         );
+      case 4:
+        return (
+          <motion.div
+            key="step4"
+            custom={direction}
+            variants={slideVariants}
+            initial="enter"
+            animate="center"
+            exit="exit"
+            transition={{ type: 'spring', stiffness: 300, damping: 30 }}
+            className="flex flex-col gap-6 items-center justify-center w-full"
+          >
+            <div className="text-center mb-2 w-full">
+              <h2 className="text-2xl font-headline font-bold text-on-surface uppercase tracking-tight">Payment Authorization</h2>
+              <p className="text-on-surface-variant text-sm mt-2">Scan to transfer ₹400 and upload the receipt.</p>
+            </div>
+            
+            <div className="w-72 h-72 mx-auto bg-surface-container-highest border-2 border-outline-variant/30 relative flex items-center justify-center shadow-[4px_4px_0_rgba(255,255,255,0.05)] bg-white p-3">
+              <img src="/qr_payment.jpeg" alt="Payment QR Code" className="max-w-full max-h-full object-contain mx-auto block" />
+            </div>
+
+            <div className="w-full max-w-sm mx-auto flex flex-col items-center">
+              <label className="text-xs font-bold text-tertiary uppercase tracking-wider block mb-2 text-center w-full">Upload Receipt Screenshot</label>
+              <input
+                type="file"
+                accept="image/*"
+                className="w-full bg-surface-container-high border border-outline-variant rounded-md px-4 py-3 text-sm text-white file:mr-4 file:py-2 file:px-4 file:border-0 file:text-xs file:font-bold file:uppercase file:tracking-widest file:bg-primary/20 file:text-primary hover:file:bg-primary/30 outline-none transition-colors"
+                onChange={(e) => setPaymentFile(e.target.files[0] || null)}
+              />
+              {paymentFile && (
+                <p className="text-xs text-primary mt-2 uppercase tracking-widest text-center w-full">✓ {paymentFile.name}</p>
+              )}
+            </div>
+          </motion.div>
+        );
+      case 5:
+        return (
+          <motion.div
+            key="step5"
+            custom={direction}
+            variants={slideVariants}
+            initial="enter"
+            animate="center"
+            exit="exit"
+            transition={{ type: 'spring', stiffness: 300, damping: 30 }}
+            className="flex flex-col gap-6 items-center"
+          >
+            <div className="text-center mb-2">
+              <h2 className="text-2xl font-headline font-bold text-on-surface uppercase tracking-tight">Comms Established</h2>
+              <p className="text-on-surface-variant text-sm mt-2">Join the operative WhatsApp group for updates.</p>
+            </div>
+            
+            <div className="w-48 h-48 bg-white border-2 border-[#25D366]/30 relative flex flex-col items-center justify-center p-2 mt-4 shadow-[4px_4px_0_rgba(37,211,102,0.1)]">
+              <img src="/image.png" alt="WhatsApp Group QR Code" className="max-w-full max-h-full object-contain mx-auto block" />
+            </div>
+            
+            <p className="text-xs text-on-surface-variant text-center max-w-[80%] uppercase tracking-widest leading-relaxed">
+              Scan this code with your device to join the official alert channel.
+            </p>
+          </motion.div>
+        );
+      case 6:
+        return (
+          <motion.div
+            key="step6"
+            custom={direction}
+            variants={slideVariants}
+            initial="enter"
+            animate="center"
+            exit="exit"
+            transition={{ type: 'spring', stiffness: 300, damping: 30 }}
+            className="flex flex-col gap-6 items-center justify-center h-full min-h-[350px]"
+          >
+            <motion.div 
+              initial={{ scale: 0, rotate: -180 }}
+              animate={{ scale: 1, rotate: 0 }}
+              transition={{ type: 'spring', stiffness: 200, damping: 20, delay: 0.2 }}
+              className="w-24 h-24 bg-primary/20 rounded-none flex items-center justify-center border-2 border-primary mb-4 shadow-[8px_8px_0_0_rgba(255,124,245,0.4)]"
+            >
+              <span className="material-symbols-outlined text-5xl text-primary">check</span>
+            </motion.div>
+            
+            <div className="text-center">
+              <h2 className="text-3xl font-headline font-black text-on-surface uppercase tracking-tight neon-glow-primary mb-4">Registration Locked</h2>
+              <p className="text-on-surface-variant text-sm leading-relaxed max-w-sm mx-auto font-body uppercase tracking-wider">
+                We are waiting to see you at the event! Your squad's credentials have been safely received.
+              </p>
+              <div className="mt-6 flex items-center justify-center gap-2">
+                <span className="w-2 h-2 bg-secondary animate-pulse"></span>
+                <span className="text-xs font-bold text-secondary uppercase tracking-widest">
+                  Prepare for deployment
+                </span>
+                <span className="w-2 h-2 bg-secondary animate-pulse"></span>
+              </div>
+            </div>
+
+            <button
+              onClick={onClose}
+              className="mt-6 bg-surface-container-highest border border-outline-variant hover:border-primary text-white hover:text-primary px-8 py-3 text-sm font-bold uppercase tracking-wider transition-all"
+            >
+              Close Terminal
+            </button>
+          </motion.div>
+        );
       default:
         return null;
     }
@@ -330,8 +484,8 @@ export default function RegistrationModal({ isOpen, onClose }) {
             <div className="h-1 w-full bg-surface-container-highest">
               <motion.div 
                 className="h-full bg-gradient-to-r from-primary to-secondary"
-                initial={{ width: '33%' }}
-                animate={{ width: `${(step / 3) * 100}%` }}
+                initial={{ width: '16.6%' }}
+                animate={{ width: `${(step / 6) * 100}%` }}
                 transition={{ duration: 0.3 }}
               />
             </div>
@@ -346,25 +500,34 @@ export default function RegistrationModal({ isOpen, onClose }) {
               </div>
 
               {/* Navigation Footer */}
-              <div className="mt-8 flex justify-between items-center pt-4 border-t border-outline-variant/30">
-                {step > 1 ? (
-                  <button 
-                    onClick={prevStep}
-                    className="text-sm font-bold text-on-surface-variant hover:text-white uppercase tracking-wider transition-colors"
-                  >
-                    Return
-                  </button>
-                ) : (
-                  <div /> // Spacer
-                )}
+              {step < 6 && (
+                <div className="mt-8 flex flex-col gap-3 pt-4 border-t border-outline-variant/30">
+                  {submitError && (
+                    <p className="text-error text-xs uppercase tracking-widest text-center">{submitError}</p>
+                  )}
+                  <div className="flex justify-between items-center">
+                    {step > 1 ? (
+                      <button
+                        onClick={prevStep}
+                        disabled={isSubmitting}
+                        className="text-sm font-bold text-on-surface-variant hover:text-white uppercase tracking-wider transition-colors disabled:opacity-40"
+                      >
+                        Return
+                      </button>
+                    ) : (
+                      <div />
+                    )}
 
-                <button
-                  onClick={step === 3 ? () => alert('Mock Payment Init...') : nextStep}
-                  className="bg-white text-black hover:bg-white/90 px-6 py-2.5 rounded-full text-sm font-bold uppercase tracking-wider shadow-[0_0_15px_rgba(255,255,255,0.3)] transition-all hover:scale-105 active:scale-95"
-                >
-                  {step === 3 ? 'Deploy Payment' : 'Proceed'}
-                </button>
-              </div>
+                    <button
+                      onClick={step === 4 ? handleSubmit : nextStep}
+                      disabled={isSubmitting}
+                      className="bg-white text-black hover:bg-white/90 px-6 py-2.5 rounded-none text-sm font-bold uppercase tracking-wider shadow-[4px_4px_0_0_rgba(255,255,255,0.3)] transition-all hover:-translate-y-1 hover:shadow-[6px_6px_0_0_rgba(255,255,255,0.4)] active:translate-y-0 active:shadow-none disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:translate-y-0"
+                    >
+                      {isSubmitting ? 'Transmitting...' : step === 3 ? 'Deploy Payment' : step === 5 ? 'Finish' : 'Proceed'}
+                    </button>
+                  </div>
+                </div>
+              )}
 
             </div>
           </motion.div>

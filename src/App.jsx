@@ -7,6 +7,7 @@ import Schedule from './components/Schedule';
 import Prizes from './components/Prizes';
 import CTA from './components/CTA';
 import Venue from './components/Venue';
+import Leadership from './components/Leadership';
 import Footer from './components/Footer';
 import ScrollAnimations from './components/ScrollAnimations';
 import RegistrationModal from './components/RegistrationModal';
@@ -36,6 +37,7 @@ function App() {
           <Prizes />
           <CTA onRegisterClick={() => setIsModalOpen(true)} />
           <Venue />
+          <Leadership />
         </main>
         <Footer />
       </div>
