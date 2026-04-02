@@ -78,7 +78,11 @@ export default function Hero() {
 
         {/* Main heading — dramatic slide-up, most visible animation on page */}
         <motion.h1
-          className="font-headline text-6xl md:text-9xl font-black tracking-tighter leading-none mb-6 neon-glow-primary"
+          className="font-headline text-6xl md:text-9xl font-black tracking-tighter leading-none mb-6"
+          style={{
+            color: '#ffffff',
+            WebkitTextStroke: '1px rgba(0, 0, 0, 0.6)',
+          }}
           initial={{ opacity: 0, y: 70 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.9, delay: 0.3, ease: [0.22, 1, 0.36, 1] }}
