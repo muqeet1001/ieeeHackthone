@@ -61,18 +61,51 @@ export default function Hero() {
           animate={{ opacity: 1 }}
           transition={{ duration: 0.6, delay: 0.1 }}
         >
-          <div style={{ width: '700px', height: '52px', maxWidth: '95vw', margin: '0 auto' }}>
-            <VaporizeText
-              texts={["HKBK COLLEGE OF ENGINEERING"]}
-              font={{ fontFamily: "Space Grotesk, sans-serif", fontSize: "28px", fontWeight: 700 }}
-              color="rgb(255, 124, 245)"
-              spread={4}
-              density={6}
-              animation={{ vaporizeDuration: 2.5, fadeInDuration: 1, waitDuration: 1.5 }}
-              direction="left-to-right"
-              alignment="center"
-              tag="p"
-            />
+          <div className="mx-auto" style={{ maxWidth: '95vw' }}>
+            {/* Desktop View: Single line */}
+            <div className="hidden md:block" style={{ width: '700px', height: '52px' }}>
+              <VaporizeText
+                texts={["HKBK COLLEGE OF ENGINEERING"]}
+                font={{ fontFamily: "Space Grotesk, sans-serif", fontSize: "28px", fontWeight: 700 }}
+                color="rgb(255, 124, 245)"
+                spread={4}
+                density={6}
+                animation={{ vaporizeDuration: 2.5, fadeInDuration: 1, waitDuration: 1.5 }}
+                direction="left-to-right"
+                alignment="center"
+                tag="p"
+              />
+            </div>
+
+            {/* Mobile View: Two lines */}
+            <div className="md:hidden flex flex-col items-center gap-1">
+              <div style={{ width: '300px', height: '40px' }}>
+                <VaporizeText
+                  texts={["HKBK"]}
+                  font={{ fontFamily: "Space Grotesk, sans-serif", fontSize: "26px", fontWeight: 700 }}
+                  color="rgb(255, 124, 245)"
+                  spread={4}
+                  density={6}
+                  animation={{ vaporizeDuration: 2.5, fadeInDuration: 1, waitDuration: 1.5 }}
+                  direction="left-to-right"
+                  alignment="center"
+                  tag="p"
+                />
+              </div>
+              <div style={{ width: '100%', height: '36px' }}>
+                <VaporizeText
+                  texts={["COLLEGE OF ENGINEERING"]}
+                  font={{ fontFamily: "Space Grotesk, sans-serif", fontSize: "18px", fontWeight: 700 }}
+                  color="rgb(255, 124, 245)"
+                  spread={4}
+                  density={6}
+                  animation={{ vaporizeDuration: 2.5, fadeInDuration: 1, waitDuration: 1.5 }}
+                  direction="left-to-right"
+                  alignment="center"
+                  tag="p"
+                />
+              </div>
+            </div>
           </div>
         </motion.div>
 
@@ -103,7 +136,7 @@ export default function Hero() {
           </p>
           <div className="h-[2px] w-24 bg-outline-variant hidden md:block" />
           <p className="font-label text-xl tracking-widest text-on-surface-variant">
-            48 HOURS OF PURE NEURAL FIRE
+            2 DAYS PURE NEURAL FIRE
           </p>
         </motion.div>
 
