@@ -63,14 +63,14 @@ export default function Hero() {
         >
           <div className="mx-auto" style={{ maxWidth: '95vw' }}>
             {/* Desktop View: Single line */}
-            <div className="hidden md:block" style={{ width: '700px', height: '52px' }}>
+            <div className="hidden md:block" style={{ width: '900px', height: '80px' }}>
               <VaporizeText
                 texts={["HKBK COLLEGE OF ENGINEERING"]}
-                font={{ fontFamily: "Space Grotesk, sans-serif", fontSize: "28px", fontWeight: 700 }}
+                font={{ fontFamily: "Space Grotesk, sans-serif", fontSize: "42px", fontWeight: 800 }}
                 color="rgb(255, 124, 245)"
-                spread={4}
-                density={6}
-                animation={{ vaporizeDuration: 2.5, fadeInDuration: 1, waitDuration: 1.5 }}
+                spread={5}
+                density={8}
+                animation={{ vaporizeDuration: 4.5, fadeInDuration: 1.5, waitDuration: 2.5 }}
                 direction="left-to-right"
                 alignment="center"
                 tag="p"
@@ -78,28 +78,28 @@ export default function Hero() {
             </div>
 
             {/* Mobile View: Two lines */}
-            <div className="md:hidden flex flex-col items-center gap-1">
-              <div style={{ width: '300px', height: '40px' }}>
+            <div className="md:hidden flex flex-col items-center gap-2">
+              <div style={{ width: '300px', height: '60px' }}>
                 <VaporizeText
                   texts={["HKBK"]}
-                  font={{ fontFamily: "Space Grotesk, sans-serif", fontSize: "26px", fontWeight: 700 }}
+                  font={{ fontFamily: "Space Grotesk, sans-serif", fontSize: "42px", fontWeight: 800 }}
                   color="rgb(255, 124, 245)"
                   spread={4}
                   density={6}
-                  animation={{ vaporizeDuration: 2.5, fadeInDuration: 1, waitDuration: 1.5 }}
+                  animation={{ vaporizeDuration: 4.5, fadeInDuration: 1.5, waitDuration: 2.5 }}
                   direction="left-to-right"
                   alignment="center"
                   tag="p"
                 />
               </div>
-              <div style={{ width: '100%', height: '36px' }}>
+              <div style={{ width: '100%', height: '48px' }}>
                 <VaporizeText
                   texts={["COLLEGE OF ENGINEERING"]}
-                  font={{ fontFamily: "Space Grotesk, sans-serif", fontSize: "18px", fontWeight: 700 }}
+                  font={{ fontFamily: "Space Grotesk, sans-serif", fontSize: "24px", fontWeight: 700 }}
                   color="rgb(255, 124, 245)"
                   spread={4}
                   density={6}
-                  animation={{ vaporizeDuration: 2.5, fadeInDuration: 1, waitDuration: 1.5 }}
+                  animation={{ vaporizeDuration: 4.5, fadeInDuration: 1.5, waitDuration: 2.5 }}
                   direction="left-to-right"
                   alignment="center"
                   tag="p"

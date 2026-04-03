@@ -2,12 +2,14 @@ import { useState } from 'react';
 import { MotionConfig } from 'framer-motion';
 import TopNavBar from './components/TopNavBar';
 import Hero from './components/Hero';
+import PartnerLogos from './components/PartnerLogos';
 import Features from './components/Features';
 import Schedule from './components/Schedule';
 import Prizes from './components/Prizes';
 import CTA from './components/CTA';
-import Venue from './components/Venue';
 import Leadership from './components/Leadership';
+import Coordinators from './components/Coordinators';
+import Venue from './components/Venue';
 import Footer from './components/Footer';
 import ScrollAnimations from './components/ScrollAnimations';
 import RegistrationModal from './components/RegistrationModal';
@@ -32,12 +34,14 @@ function App() {
         <TopNavBar onRegisterClick={() => setIsModalOpen(true)} />
         <main className="pt-20">
           <Hero />
+          <PartnerLogos />
           <Features />
           <Schedule />
           <Prizes />
           <CTA onRegisterClick={() => setIsModalOpen(true)} />
-          <Venue />
           <Leadership />
+          <Coordinators />
+          <Venue />
         </main>
         <Footer />
       </div>
