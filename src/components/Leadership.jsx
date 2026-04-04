@@ -28,7 +28,7 @@ export default function Leadership() {
     <section className="relative px-6 py-24 bg-surface-container-low border-t border-dashed border-[#262626]">
       <div className="max-w-7xl mx-auto w-full">
         <div className="mb-20 text-center max-w-4xl mx-auto">
-          <h2 className="font-headline text-4xl md:text-5xl font-black mb-6 uppercase tracking-tight text-on-surface">OUR PATRONS</h2>
+          <h2 className="font-headline text-4xl md:text-5xl font-black mb-6 uppercase tracking-tight text-on-surface">OUR LEADERSHIP</h2>
           <p className="text-on-surface-variant text-lg md:text-xl leading-relaxed font-body">
             We extend our deepest gratitude to our institution's visionary leadership. Their unwavering support, guidance, and dedication constitute the foundational pillars in making AI IGNITE 2026 a reality.
           </p>
