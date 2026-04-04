@@ -22,8 +22,8 @@ const studentCoordinators = [
   "Shahensha khatun",
   "Satwik Girish Gosavi",
   "Shafiulla",
-  "Rushil Sham",
-  "Raju Mohammad Zuhaib Wani"
+  "Rushil Sham Raju",
+  " Mohammad Zuhaib Wani"
 ];
 
 const container = {
