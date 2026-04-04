@@ -339,12 +339,12 @@ void main(void) {
     col+=.00125/d*(cos(sin(i)*vec3(3,1,3))+1.);
     float b=noise(i+p+bg*1.731);
     col+=.002*b/length(max(p,vec2(b*p.x*.02,p.y)));
-    col=mix(col,vec3(bg*.18,bg*.03,bg*.20),d);
+    col=mix(col,vec3(bg*.12,bg*.01,bg*.25),d);
   }
 
   /* soft cursor aura glow */
   float glow = hasPointer * 0.008 / (dist * dist + 0.015);
-  col += glow * vec3(0.5, 0.1, 0.45);
+  col += glow * vec3(0.4, 0.05, 0.6);
 
   O=vec4(col,1);
 }`;
