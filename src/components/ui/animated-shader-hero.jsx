@@ -384,7 +384,7 @@ export default function Hero({
       {/* WebGL2 Shader Canvas */}
       <canvas
         ref={canvasRef}
-        className="absolute inset-0 w-full h-full touch-none"
+        className="absolute inset-0 w-full h-full"
         style={{ background: 'black' }}
       />
 
