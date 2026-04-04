@@ -2,23 +2,23 @@ import { motion } from 'framer-motion';
 
 const leaders = [
   {
-    title: "CHAIRMAN",
-    name: "Shri C.M Ibrahim Saheb",
+    title: "PATRON",
+    name: "Shri C.M Ibrahim Saheb (Chairman)",
     image: "/chairman.jpeg"
   },
   {
-    title: "DIRECTOR",
-    name: "Shri C.M Faiz Mohammed",
+    title: "PATRON",
+    name: "Shri C.M Faiz Mohammed (Director)",
     image: "/directorjpeg.jpeg"
   },
   {
-    title: "PRINCIPAL",
-    name: "Dr. Mohammed Riyaz Ahmed",
+    title: "CHAIRPERSON",
+    name: "Dr. Mohammed Riyaz Ahmed (Principal)",
     image: "/priciple.jpeg"
   },
   {
-    title: "HOD",
-    name: "Dr. Smitha Kurian",
+    title: "CONVENOR",
+    name: "Dr. Smitha Kurian (HOD)",
     image: "/hod.jpeg"
   }
 ];

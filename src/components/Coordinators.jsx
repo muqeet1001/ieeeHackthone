@@ -1,5 +1,10 @@
 import { motion } from 'framer-motion';
 
+const organizers = [
+  "Dr. Madhu Gopinath",
+  "Dr. Sivarajan"
+];
+
 const facultyCoordinators = [
   "Prof. Denzina",
   "Prof. Sushmitha",
@@ -59,7 +64,35 @@ export default function Coordinators() {
           <div className="h-1 w-24 bg-primary mx-auto mb-8" />
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-16">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 lg:gap-12">
+          
+          {/* Organizers Section */}
+          <motion.div 
+            variants={container}
+            initial="hidden"
+            whileInView="show"
+            viewport={{ once: true }}
+            className="space-y-8"
+          >
+            <h3 className="font-headline text-2xl font-bold text-tertiary flex items-center gap-3 mb-8">
+              <span className="w-8 h-8 rounded-full bg-tertiary/20 flex items-center justify-center text-sm">01</span>
+              ORGANIZERS
+            </h3>
+            
+            <div className="flex flex-col gap-4">
+              {organizers.map((name, i) => (
+                <motion.div 
+                  key={i}
+                  variants={item}
+                  whileHover={{ x: 10 }}
+                  className="p-5 bg-surface-container border-l-4 border-tertiary hover:bg-surface-container-high transition-colors flex items-center justify-between group cursor-default shadow-[4px_4px_0px_0px_#262626]"
+                >
+                  <span className="font-label text-lg font-bold tracking-tight text-on-surface">{name}</span>
+                  <span className="material-symbols-outlined text-tertiary opacity-0 group-hover:opacity-100 transition-opacity">manage_accounts</span>
+                </motion.div>
+              ))}
+            </div>
+          </motion.div>
           
           {/* Faculty Section */}
           <motion.div 
@@ -70,7 +103,7 @@ export default function Coordinators() {
             className="space-y-8"
           >
             <h3 className="font-headline text-2xl font-bold text-primary flex items-center gap-3 mb-8">
-              <span className="w-8 h-8 rounded-full bg-primary/20 flex items-center justify-center text-sm">01</span>
+              <span className="w-8 h-8 rounded-full bg-primary/20 flex items-center justify-center text-sm">02</span>
               FACULTY COORDINATORS
             </h3>
             
@@ -98,7 +131,7 @@ export default function Coordinators() {
             className="space-y-8"
           >
             <h3 className="font-headline text-2xl font-bold text-secondary flex items-center gap-3 mb-8">
-              <span className="w-8 h-8 rounded-full bg-secondary/20 flex items-center justify-center text-sm">02</span>
+              <span className="w-8 h-8 rounded-full bg-secondary/20 flex items-center justify-center text-sm">03</span>
               STUDENT COORDINATORS
             </h3>
             
