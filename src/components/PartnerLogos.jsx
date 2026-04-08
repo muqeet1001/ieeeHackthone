@@ -6,6 +6,7 @@ const partners = [
   { name: 'VTU', logo: '/VTU-webp.webp' },
   { name: 'IEEE CS', logo: '/ieeecsjpeg.jpeg' },
   { name: 'IEEE Bangalore', logo: '/ieeebanl.png' },
+  { name: 'Red Bull', logo: '/redbull-can.png', isEnergy: true },
 ];
 
 export default function PartnerLogos() {
@@ -22,7 +23,7 @@ export default function PartnerLogos() {
         {/* "Official Partners" side-label for a more integrated look */}
         <div className="hidden lg:flex items-center px-12 z-20 bg-white/5 h-full border-r border-white/10 shrink-0">
           <p className="font-label text-[9px] tracking-[0.6em] text-primary/80 font-bold uppercase whitespace-nowrap">
-            TRUSTED PARTNERS
+          PARTNERS & SPONSORS
           </p>
         </div>
 
@@ -46,11 +47,18 @@ export default function PartnerLogos() {
                 key={`${partner.name}-${index}`}
                 className="flex-shrink-0 group px-4 py-3 cursor-pointer"
               >
-                <div className="p-1 md:p-2 rounded-2xl bg-white/5 border border-white/5 backdrop-blur-sm transition-all duration-500 group-hover:border-primary/40 group-hover:bg-primary/5">
-                  <img 
-                    src={partner.logo} 
-                    alt={partner.name} 
-                    className="h-10 md:h-20 w-auto object-contain transition-all duration-500 group-hover:scale-110 group-hover:drop-shadow-[0_0_15px_rgba(255,124,245,0.5)] filter brightness-100 contrast-100 grayscale-[0.1] hover:grayscale-0"
+                <div
+                  className="p-1 md:p-2 rounded-2xl bg-white/5 border border-white/5 backdrop-blur-sm transition-all duration-500 group-hover:border-primary/40 group-hover:bg-primary/5"
+                  style={partner.isEnergy ? { borderColor: 'rgba(219,10,64,0.15)' } : {}}
+                >
+                  <img
+                    src={partner.logo}
+                    alt={partner.name}
+                    className={`h-10 md:h-20 w-auto object-contain transition-all duration-500 group-hover:scale-110 filter ${
+                      partner.isEnergy
+                        ? 'group-hover:drop-shadow-[0_0_18px_rgba(219,10,64,0.7)] brightness-110'
+                        : 'group-hover:drop-shadow-[0_0_15px_rgba(255,124,245,0.5)] brightness-100 contrast-100 grayscale-[0.1] hover:grayscale-0'
+                    }`}
                   />
                 </div>
               </div>

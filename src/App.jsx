@@ -7,6 +7,7 @@ import Features from './components/Features';
 import Schedule from './components/Schedule';
 import Prizes from './components/Prizes';
 import CTA from './components/CTA';
+import Sponsors from './components/Sponsors';
 import Leadership from './components/Leadership';
 import Coordinators from './components/Coordinators';
 import Venue from './components/Venue';
@@ -38,6 +39,7 @@ function App() {
           <Features />
           <Schedule />
           <Prizes />
+          <Sponsors />
           <CTA onRegisterClick={() => setIsModalOpen(true)} />
           <Leadership />
           <Coordinators />
