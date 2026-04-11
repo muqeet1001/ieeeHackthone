@@ -1,5 +1,6 @@
 import AnimatedShaderHero from "./ui/animated-shader-hero";
 import { motion } from 'framer-motion';
+import Countdown from "./ui/Countdown";
 
 export default function Hero() {
   const handlePrimaryClick = () => {
@@ -20,7 +21,9 @@ export default function Hero() {
           line2: "AI IGNITE HACKATHON"
         }}
         subtitle="2 DAYS OF PURE NEURAL FIRE — Supercharge your ideas with AI-powered innovation built for the next generation of developers."
-      />
+      >
+        <Countdown targetDate="2026-04-14T10:00:00" />
+      </AnimatedShaderHero>
 
       {/* Scroll hint */}
       <motion.div

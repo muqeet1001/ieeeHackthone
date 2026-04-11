@@ -356,7 +356,8 @@ export default function Hero({
   headline,
   subtitle,
   buttons,
-  className = ""
+  className = "",
+  children
 }) {
   const canvasRef = useShaderBackground();
 
@@ -440,6 +441,8 @@ export default function Hero({
             </div>
           </div>
         )}
+        
+        {children}
       </div>
     </div>
   );
