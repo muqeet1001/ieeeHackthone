@@ -14,9 +14,11 @@ import Venue from './components/Venue';
 import Footer from './components/Footer';
 import ScrollAnimations from './components/ScrollAnimations';
 import RegistrationModal from './components/RegistrationModal';
+import { useRegistrationSlots } from './hooks/useRegistrationSlots';
 
 function App() {
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const slots = useRegistrationSlots(45000);
 
   return (
     /*
@@ -28,19 +30,35 @@ function App() {
      * animation effects disabled would see ZERO motion on the page.
      */
     <MotionConfig reducedMotion="never">
-      <RegistrationModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} />
+      <RegistrationModal
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        isFull={slots.isFull}
+        slotsLoading={slots.loading}
+        refreshSlots={slots.refresh}
+      />
       
       <div className="bg-background text-on-surface font-body selection:bg-primary selection:text-on-primary-fixed min-h-screen relative">
         <ScrollAnimations />
-        <TopNavBar onRegisterClick={() => setIsModalOpen(true)} />
+        <TopNavBar
+          onRegisterClick={() => setIsModalOpen(true)}
+          registrationDisabled={slots.isFull}
+        />
         <main className="pt-20">
-          <Hero />
+          <Hero
+            seatsLeft={slots.seatsLeft}
+            count={slots.count}
+            maxSlots={slots.maxSlots}
+            isFull={slots.isFull}
+            loading={slots.loading}
+            error={slots.error}
+          />
           <PartnerLogos />
           <Features />
           <Schedule />
           <Prizes />
           <Sponsors />
-          <CTA onRegisterClick={() => setIsModalOpen(true)} />
+          <CTA onRegisterClick={() => setIsModalOpen(true)} registrationDisabled={slots.isFull} />
           <Leadership />
           <Coordinators />
           <Venue />

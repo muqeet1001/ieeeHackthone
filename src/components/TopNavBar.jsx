@@ -8,7 +8,7 @@ const NAV_LINKS = [
   { label: 'VENUE',    href: '#venue' },
 ];
 
-export default function TopNavBar({ onRegisterClick }) {
+export default function TopNavBar({ onRegisterClick, registrationDisabled }) {
   // Track whether the user has scrolled down so we can apply the blur background
   const [scrolled, setScrolled] = useState(false);
 
@@ -67,13 +67,19 @@ export default function TopNavBar({ onRegisterClick }) {
 
       {/* CTA — scale on hover, press on tap */}
       <motion.button
-        onClick={onRegisterClick}
-        className="bg-primary text-on-primary-fixed px-6 py-2 font-bold tracking-tighter hover:bg-secondary transition-colors duration-200"
-        whileHover={{ scale: 1.05 }}
-        whileTap={{ scale: 0.95 }}
+        type="button"
+        onClick={() => !registrationDisabled && onRegisterClick()}
+        disabled={registrationDisabled}
+        className={`px-6 py-2 font-bold tracking-tighter transition-colors duration-200 ${
+          registrationDisabled
+            ? 'bg-on-surface-variant/30 text-on-surface-variant cursor-not-allowed'
+            : 'bg-primary text-on-primary-fixed hover:bg-secondary'
+        }`}
+        whileHover={registrationDisabled ? {} : { scale: 1.05 }}
+        whileTap={registrationDisabled ? {} : { scale: 0.95 }}
         transition={{ type: 'spring', stiffness: 400, damping: 25 }}
       >
-        REGISTER NOW
+        {registrationDisabled ? 'REGISTRATION FULL' : 'REGISTER NOW'}
       </motion.button>
     </motion.header>
   );

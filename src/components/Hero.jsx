@@ -1,8 +1,15 @@
 import AnimatedShaderHero from "./ui/animated-shader-hero";
 import { motion } from 'framer-motion';
-import Countdown from "./ui/Countdown";
+import RegistrationSeats from "./ui/RegistrationSeats";
 
-export default function Hero() {
+export default function Hero({
+  seatsLeft,
+  count,
+  maxSlots,
+  isFull,
+  loading,
+  error,
+}) {
   const handlePrimaryClick = () => {
     const el = document.getElementById('register') || document.getElementById('features');
     if (el) el.scrollIntoView({ behavior: 'smooth' });
@@ -22,7 +29,14 @@ export default function Hero() {
         }}
         subtitle="2 DAYS OF PURE NEURAL FIRE — Supercharge your ideas with AI-powered innovation built for the next generation of developers."
       >
-        <Countdown targetDate="2026-04-14T10:00:00" />
+        <RegistrationSeats
+          seatsLeft={seatsLeft}
+          count={count}
+          maxSlots={maxSlots}
+          isFull={isFull}
+          loading={loading}
+          error={error}
+        />
       </AnimatedShaderHero>
 
       {/* Scroll hint */}

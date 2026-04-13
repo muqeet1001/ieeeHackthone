@@ -1,7 +1,7 @@
 import { motion } from 'framer-motion';
 import { FadeInView } from './animations';
 
-export default function CTA({ onRegisterClick }) {
+export default function CTA({ onRegisterClick, registrationDisabled }) {
   return (
     <section className="py-24 px-6 bg-surface-container">
       {/* Section fades + slides up when it enters the viewport */}
@@ -18,13 +18,19 @@ export default function CTA({ onRegisterClick }) {
               </p>
               {/* Button — scale up on hover, press down on tap */}
               <motion.button
-                onClick={onRegisterClick}
-                className="w-full md:w-auto bg-secondary text-on-secondary-fixed font-headline font-black text-xl px-12 py-5 uppercase tracking-tighter hover:bg-primary transition-colors duration-200"
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
+                type="button"
+                onClick={() => !registrationDisabled && onRegisterClick()}
+                disabled={registrationDisabled}
+                className={`w-full md:w-auto font-headline font-black text-xl px-12 py-5 uppercase tracking-tighter transition-colors duration-200 ${
+                  registrationDisabled
+                    ? 'bg-on-surface-variant/40 text-on-surface-variant cursor-not-allowed'
+                    : 'bg-secondary text-on-secondary-fixed hover:bg-primary'
+                }`}
+                whileHover={registrationDisabled ? {} : { scale: 1.05 }}
+                whileTap={registrationDisabled ? {} : { scale: 0.95 }}
                 transition={{ type: 'spring', stiffness: 400, damping: 25 }}
               >
-                REGISTER NOW
+                {registrationDisabled ? 'REGISTRATION FULL' : 'REGISTER NOW'}
               </motion.button>
             </div>
             <div className="flex-shrink-0 flex flex-col items-center justify-center gap-3">

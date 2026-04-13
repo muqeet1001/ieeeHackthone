@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { REGISTER_API_URL, MAX_TEAM_SLOTS } from '../config';
 
 // Sample transitions for steps
 const slideVariants = {
@@ -19,7 +20,13 @@ const slideVariants = {
   }),
 };
 
-export default function RegistrationModal({ isOpen, onClose }) {
+export default function RegistrationModal({
+  isOpen,
+  onClose,
+  isFull = false,
+  slotsLoading = false,
+  refreshSlots,
+}) {
   const [step, setStep] = useState(1);
   const [direction, setDirection] = useState(1); // 1 = forward, -1 = backward
   const [errors, setErrors] = useState({});
@@ -136,20 +143,41 @@ export default function RegistrationModal({ isOpen, onClose }) {
     setIsSubmitting(true);
     setSubmitError('');
     try {
+      const statusRes = await fetch(REGISTER_API_URL);
+      const statusJson = await statusRes.json();
+      if (
+        statusRes.ok &&
+        statusJson.success &&
+        typeof statusJson.count === 'number' &&
+        statusJson.count >= MAX_TEAM_SLOTS
+      ) {
+        setSubmitError(
+          `Registration is full — all ${MAX_TEAM_SLOTS} team slots are taken.`
+        );
+        triggerShake();
+        await refreshSlots?.();
+        return;
+      }
+
       const formData = new FormData();
       formData.append('teamName', data.teamName);
       formData.append('memberCount', data.memberCount);
       formData.append('members', JSON.stringify(data.members));
       formData.append('paymentScreenshot', paymentFile);
 
-      const res = await fetch('https://backend-hackathone-jh96bgz5r-mqts-projects.vercel.app/api/register', {
+      const res = await fetch(REGISTER_API_URL, {
         method: 'POST',
         body: formData,
       });
       const json = await res.json();
       if (!res.ok || !json.success) {
-        throw new Error(json.message || 'Registration failed');
+        const msg = json.message || 'Registration failed';
+        if (res.status === 403 || /full|limit|maximum/i.test(msg)) {
+          await refreshSlots?.();
+        }
+        throw new Error(msg);
       }
+      await refreshSlots?.();
       // Success — advance past the payment QR step to WhatsApp step
       setDirection(1);
       setStep(5);
@@ -501,53 +529,82 @@ export default function RegistrationModal({ isOpen, onClose }) {
 
             {/* Progress Bar */}
             <div className="h-1 w-full bg-surface-container-highest">
-              <motion.div 
-                className="h-full bg-gradient-to-r from-primary to-secondary"
-                initial={{ width: '16.6%' }}
-                animate={{ width: `${(step / 6) * 100}%` }}
-                transition={{ duration: 0.3 }}
-              />
+              {slotsLoading ? null : isFull ? (
+                <div className="h-full w-full bg-on-surface-variant" />
+              ) : (
+                <motion.div
+                  className="h-full bg-gradient-to-r from-primary to-secondary"
+                  initial={{ width: '16.6%' }}
+                  animate={{ width: `${(step / 6) * 100}%` }}
+                  transition={{ duration: 0.3 }}
+                />
+              )}
             </div>
 
             {/* Content Area */}
             <div className="p-8 relative min-h-[400px] flex flex-col">
-              
-              <div className="flex-1 overflow-hidden relative">
-                <AnimatePresence custom={direction} mode="wait">
-                  {renderStep()}
-                </AnimatePresence>
-              </div>
-
-              {/* Navigation Footer */}
-              {step < 6 && (
-                <div className="mt-8 flex flex-col gap-3 pt-4 border-t border-outline-variant/30">
-                  {submitError && (
-                    <p className="text-error text-xs uppercase tracking-widest text-center">{submitError}</p>
-                  )}
-                  <div className="flex justify-between items-center">
-                    {step > 1 ? (
-                      <button
-                        onClick={prevStep}
-                        disabled={isSubmitting}
-                        className="text-sm font-bold text-on-surface-variant hover:text-white uppercase tracking-wider transition-colors disabled:opacity-40"
-                      >
-                        Return
-                      </button>
-                    ) : (
-                      <div />
-                    )}
-
-                    <button
-                      onClick={step === 4 ? handleSubmit : nextStep}
-                      disabled={isSubmitting}
-                      className="bg-white text-black hover:bg-white/90 px-6 py-2.5 rounded-none text-sm font-bold uppercase tracking-wider shadow-[4px_4px_0_0_rgba(255,255,255,0.3)] transition-all hover:-translate-y-1 hover:shadow-[6px_6px_0_0_rgba(255,255,255,0.4)] active:translate-y-0 active:shadow-none disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:translate-y-0"
-                    >
-                      {isSubmitting ? 'Transmitting...' : step === 3 ? 'Deploy Payment' : step === 5 ? 'Finish' : 'Proceed'}
-                    </button>
-                  </div>
+              {slotsLoading ? (
+                <div className="flex-1 flex flex-col items-center justify-center min-h-[320px] gap-4">
+                  <p className="text-on-surface-variant text-xs uppercase tracking-widest text-center">
+                    Checking team slots…
+                  </p>
                 </div>
-              )}
+              ) : isFull ? (
+                <div className="flex-1 flex flex-col items-center justify-center min-h-[320px] text-center gap-6 px-2">
+                  <h2 className="text-2xl font-headline font-bold text-on-surface uppercase tracking-tight">
+                    Registration closed
+                  </h2>
+                  <p className="text-on-surface-variant text-sm leading-relaxed max-w-sm">
+                    All {MAX_TEAM_SLOTS} team slots are filled. Registration is no longer available.
+                  </p>
+                  <button
+                    type="button"
+                    onClick={onClose}
+                    className="bg-white text-black hover:bg-white/90 px-8 py-3 rounded-none text-sm font-bold uppercase tracking-wider shadow-[4px_4px_0_0_rgba(255,255,255,0.3)] transition-all hover:-translate-y-1"
+                  >
+                    Close
+                  </button>
+                </div>
+              ) : (
+                <>
+                  <div className="flex-1 overflow-hidden relative">
+                    <AnimatePresence custom={direction} mode="wait">
+                      {renderStep()}
+                    </AnimatePresence>
+                  </div>
 
+                  {step < 6 && (
+                    <div className="mt-8 flex flex-col gap-3 pt-4 border-t border-outline-variant/30">
+                      {submitError && (
+                        <p className="text-error text-xs uppercase tracking-widest text-center">{submitError}</p>
+                      )}
+                      <div className="flex justify-between items-center">
+                        {step > 1 ? (
+                          <button
+                            type="button"
+                            onClick={prevStep}
+                            disabled={isSubmitting}
+                            className="text-sm font-bold text-on-surface-variant hover:text-white uppercase tracking-wider transition-colors disabled:opacity-40"
+                          >
+                            Return
+                          </button>
+                        ) : (
+                          <div />
+                        )}
+
+                        <button
+                          type="button"
+                          onClick={step === 4 ? handleSubmit : nextStep}
+                          disabled={isSubmitting}
+                          className="bg-white text-black hover:bg-white/90 px-6 py-2.5 rounded-none text-sm font-bold uppercase tracking-wider shadow-[4px_4px_0_0_rgba(255,255,255,0.3)] transition-all hover:-translate-y-1 hover:shadow-[6px_6px_0_0_rgba(255,255,255,0.4)] active:translate-y-0 active:shadow-none disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:translate-y-0"
+                        >
+                          {isSubmitting ? 'Transmitting...' : step === 3 ? 'Deploy Payment' : step === 5 ? 'Finish' : 'Proceed'}
+                        </button>
+                      </div>
+                    </div>
+                  )}
+                </>
+              )}
             </div>
           </motion.div>
         </div>
