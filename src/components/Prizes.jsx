@@ -33,7 +33,7 @@ export default function Prizes() {
               <div className="w-16 h-1 bg-on-primary-fixed mb-8"></div>
               <p className="font-label font-bold tracking-[0.4em] uppercase text-sm mb-4">GRAND PRIZE POOL</p>
               <div className="font-headline text-7xl md:text-8xl font-black tracking-tighter mb-4 leading-none">
-                ₹15,000
+                ₹25,000
               </div>
               <p className="font-headline text-2xl font-bold uppercase mb-8">WINNER TAKES ALL</p>
               <div className="w-full h-[1px] bg-on-primary-fixed opacity-30 mb-8"></div>

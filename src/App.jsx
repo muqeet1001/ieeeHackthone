@@ -45,14 +45,7 @@ function App() {
           registrationDisabled={slots.isFull}
         />
         <main className="pt-20">
-          <Hero
-            seatsLeft={slots.seatsLeft}
-            count={slots.count}
-            maxSlots={slots.maxSlots}
-            isFull={slots.isFull}
-            loading={slots.loading}
-            error={slots.error}
-          />
+          <Hero />
           <PartnerLogos />
           <Features />
           <Schedule />
