@@ -112,7 +112,6 @@
   from {
     transform: rotate(0deg);
   }
-
   to {
     transform: rotate(360deg);
   }
@@ -120,4 +119,31 @@
 
 .animate-spin-slow {
   animation: spin-slow 12s linear infinite;
+}
+
+@keyframes scare-jitter {
+  0% { transform: translate(0,0) scale(1); }
+  10% { transform: translate(-2px, 1px) scale(1.005); }
+  20% { transform: translate(2px, -1px) scale(0.995); }
+  30% { transform: translate(-1px, -2px) scale(1.002); }
+  40% { transform: translate(1px, 2px) scale(0.998); }
+  50% { transform: translate(-3px, 1px) scale(1.005); }
+  60% { transform: translate(3px, -1px) scale(0.995); }
+  70% { transform: translate(-2px, -2px) scale(1.002); }
+  80% { transform: translate(2px, 2px) scale(0.998); }
+  90% { transform: translate(-1px, 1px) scale(1.005); }
+  100% { transform: translate(0,0) scale(1); }
+}
+
+@keyframes adrenaline-pulse {
+  0%, 100% { opacity: 0.3; transform: scale(1); }
+  50% { opacity: 0.6; transform: scale(1.05); }
+}
+
+.animate-scare-jitter {
+  animation: scare-jitter 0.1s linear infinite;
+}
+
+.animate-adrenaline-pulse {
+  animation: adrenaline-pulse 0.4s ease-in-out infinite;
 }

@@ -14,6 +14,7 @@ import Venue from './components/Venue';
 import Footer from './components/Footer';
 import ScrollAnimations from './components/ScrollAnimations';
 import RegistrationModal from './components/RegistrationModal';
+import Theme from './components/Theme';
 import { useRegistrationSlots } from './hooks/useRegistrationSlots';
 
 function App() {
@@ -46,6 +47,7 @@ function App() {
         />
         <main className="pt-20">
           <Hero />
+          <Theme />
           <PartnerLogos />
           <Features />
           <Schedule />

@@ -23,7 +23,7 @@ export default function Hero() {
         subtitle="2 DAYS OF PURE NEURAL FIRE — Supercharge your ideas with AI-powered innovation built for the next generation of developers."
       >
         <Countdown
-          targetDate="2026-04-15T15:00:00+05:30"
+          targetDate="2026-04-15T15:30:00+05:30"
           title="THEME REVEAL IN"
         />
       </AnimatedShaderHero>

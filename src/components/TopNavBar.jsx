@@ -3,6 +3,7 @@ import { motion } from 'framer-motion';
 
 // Nav links (excluding ABOUT which has its own active style)
 const NAV_LINKS = [
+  { label: 'THEME',    href: '#theme' },
   { label: 'SCHEDULE', href: '#schedule' },
   { label: 'PRIZES',   href: '#prizes' },
   { label: 'VENUE',    href: '#venue' },
