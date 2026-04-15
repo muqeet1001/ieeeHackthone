@@ -3,7 +3,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 
 const PARTICLE_COUNT = 15;
 
-export default function ScratchCard({ children, onReveal, isLocked }) {
+export default function ScratchCard({ children, onReveal }) {
   const canvasRef = useRef(null);
   const containerRef = useRef(null);
   const [isRevealed, setIsRevealed] = useState(false);
@@ -76,14 +76,14 @@ export default function ScratchCard({ children, onReveal, isLocked }) {
   };
 
   const handleScratch = (e) => {
-    if (isRevealed || isLocked) return;
+    if (isRevealed) return;
     
     const canvas = canvasRef.current;
     const ctx = canvas.getContext('2d');
     const rect = canvas.getBoundingClientRect();
     
-    const x = (e.clientX || e.touches[0].clientX) - rect.left;
-    const y = (e.clientY || e.touches[0].clientY) - rect.top;
+    const x = (e.clientX || (e.touches && e.touches[0].clientX)) - rect.left;
+    const y = (e.clientY || (e.touches && e.touches[0].clientY)) - rect.top;
 
     ctx.globalCompositeOperation = 'destination-out';
     ctx.beginPath();
@@ -146,7 +146,7 @@ export default function ScratchCard({ children, onReveal, isLocked }) {
             initial={{ opacity: 1 }}
             exit={{ opacity: 0, scale: 1.1, filter: 'blur(20px)' }}
             transition={{ duration: 0.8 }}
-            className={`absolute inset-0 z-20 touch-none ${isLocked ? 'cursor-not-allowed opacity-30 grayscale' : 'cursor-crosshair'}`}
+            className={`absolute inset-0 z-20 touch-none cursor-crosshair`}
             onMouseMove={(e) => isScratching && handleScratch(e)}
             onMouseDown={() => setIsScratching(true)}
             onMouseUp={() => setIsScratching(false)}
@@ -167,10 +167,10 @@ export default function ScratchCard({ children, onReveal, isLocked }) {
             className="flex flex-col items-center"
           >
             <span className="font-label text-xs tracking-[0.5em] text-primary uppercase mb-2">
-              {isLocked ? 'SYSTEM_LOCKED' : 'SYSTEM_READY'}
+              SYSTEM_READY
             </span>
             <span className="font-headline text-xl md:text-2xl text-primary uppercase font-black px-4 text-center drop-shadow-[0_0_20px_rgba(255,124,245,0.85)]">
-              {isLocked ? `REVEALING AT 3:30 PM` : 'SCRATCH THE CARD TO SEE THE THEME'}
+              SCRATCH THE CARD TO SEE THE THEME
             </span>
           </motion.div>
         </div>

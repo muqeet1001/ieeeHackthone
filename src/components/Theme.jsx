@@ -1,29 +1,7 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import ScratchCard from './ui/ScratchCard';
 
-const REVEAL_TIME = "2026-04-15T15:30:00+05:30";
-
 export default function Theme() {
-  const calculateIsLocked = () => {
-    return new Date() < new Date(REVEAL_TIME);
-  };
-
-  const [isLocked, setIsLocked] = useState(calculateIsLocked());
-
-  useEffect(() => {
-    if (!isLocked) return;
-
-    const timer = setInterval(() => {
-      const locked = calculateIsLocked();
-      if (!locked) {
-        setIsLocked(false);
-        clearInterval(timer);
-      }
-    }, 1000);
-
-    return () => clearInterval(timer);
-  }, [isLocked]);
-
   return (
     <section 
       className="min-h-[80vh] flex flex-col justify-center py-24 px-6 relative overflow-hidden select-none" 
@@ -33,7 +11,7 @@ export default function Theme() {
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-primary/5 blur-[120px] rounded-full pointer-events-none opacity-40"></div>
       
       <div className="max-w-4xl mx-auto w-full relative z-10">
-        <ScratchCard isLocked={isLocked}>
+        <ScratchCard>
           <div className="flex flex-col items-center text-center">
             {/* Section Label */}
             <div className="mb-8">
